@@ -44,4 +44,45 @@ router.post('/register', async(req, res) => {
     }
 })
 
+
+router.post('/login', async (req, res, _next) => {
+    try {
+        const { Email, Password } = req.body
+        if (!Email || !Password) {
+            res.status(400).send("Fill all fields")
+        }
+        else {
+            const user = await User.findOne({ Email })
+            if (!user) {
+                res.status(400).send("User or password is wrong")
+            }
+            else {
+                const validateuser = await bycrypt.compare(Password, user.Password)
+                if (!validateuser) {
+                    res.status(400).send("User or password is wrong")
+                }
+                else {
+                    const payload = {
+                        userId: user._id,
+                        userEmail: user.Email
+                    }
+                    const jwtkey = 'this_is_a_secret_key_which_doesnt_need_to_be_exposed'
+                    jwt.sign(payload, jwtkey, {
+                        expiresIn: 84600
+                    }, async (_err, token) => {
+                        await User.updateOne({ _id: user.id, }, {
+                            $set: { token }
+                        })
+                        user.save()
+                        return res.status(200).json({ user: { name: user.Name, email: user.Email}, token: token })
+                    })
+                }
+            }
+        }
+
+    } catch (error) {
+        console.error(error)
+    }
+})
+
 module.exports = router
