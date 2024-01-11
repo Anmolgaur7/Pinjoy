@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const Boardschema=new mongoose.Schema({
-    UserId:{
+    Userid:{
+        type:String,
+        required:true
+    },
+    Description:{
         type:String,
         required:true
     },
