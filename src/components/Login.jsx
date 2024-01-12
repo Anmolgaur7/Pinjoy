@@ -23,10 +23,6 @@ function Login() {
     const { token,user} = res;
     if(token){
       window.localStorage.setItem("token",token)
-      console.log(user.role);
-      if(user.role==="admin"){
-        navigate('/admin/dashboard')
-      }
       window.localStorage.setItem("user",JSON.stringify(user))
     }
       navigate('/')
@@ -37,7 +33,6 @@ function Login() {
   useEffect(() => {
     const token = window.localStorage.getItem("token")
     if (token) {
-      // navigate('/admin/dashboard')
       window.location.href='/'
     }
   }, [])
@@ -49,7 +44,7 @@ function Login() {
         <form className='flex flex-col bg-white p-10 items-center justify-center'>
             <input className='w-[35vw] h-10 mt-5 bg-slate-50 border border-black rounded-md pl-2' type='text' placeholder='Email' onChange={(e)=>setdata({...data,Email:e.target.value})} />
             <input className='w-[35vw] h-10 mt-5 bg-slate-50 border border-black rounded-md pl-2' type='password' placeholder='Password'onChange={ (e)=>setdata({...data ,Password:e.target.value})} />
-            <button className='w-[20vw] h-10 mt-5 rounded-md bg-slate-900 text-slate-50 hover:bg-slate-800'>Login</button>
+            <button className='w-[20vw] h-10 mt-5 rounded-md bg-slate-900 text-slate-50 hover:bg-slate-800' onClick={handlesubmit}>Login</button>
         </form>
 
         <h1 className='mt-3 text-lg'>Did'nt have  an  account? <a href="/" className='text-blue-700 text-blue-500'>SignUp</a></h1>
