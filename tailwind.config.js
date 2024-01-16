@@ -3,7 +3,11 @@ export default {
   content: ["./index.html",
   "./src/**/*.{js,ts,jsx,tsx}",],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: theme => ({
+        'background': "url('/src/images/background.jpeg')",
+      }),
+    },
   },
   plugins: [],
 }

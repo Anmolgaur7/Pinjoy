@@ -14,14 +14,14 @@ function Main() {
   return (
     <>
     <div className='bg-[rgb(211,186,241)] mt-5 flex flex-col justify-center items-center'>
-    <div className='flex items-center justify-evenly'>
+    <div className='flex items-center justify-center'>
       {
       visible? <h1 className='text-3xl text-center font-bold
       mt-12 text-slate-900 mb-6'>Welcome {user?.name}</h1> : null
       }
     </div>
     <div className='flex justify-center items-center pb-10'>
-    <button className='text-2xl font-medium bg-slate-950 pl-4 pr-4 pt-2 pb-2 rounded-md text-white hover:bg-slate-900'>Add Pin</button>
+    <button className='text-2xl font-medium bg-slate-950 pl-4 pr-4 mt-10 pt-2 pb-2 rounded-md text-white hover:bg-slate-900'> <a href="/board">Add to board</a></button>
     </div>
     </div>
     <div className='flex  justify-evenly items-center mt-3 flex-wrap'>
