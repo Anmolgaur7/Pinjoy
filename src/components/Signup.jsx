@@ -8,8 +8,8 @@ function Signup(){
     Email: '',
     Password: ''
   })
-  const navigate=useNavigate()
-  const handlesubmit = async (e) => {
+  const navigate=useNavigate();
+  const handlesubmit = async (e)=>{
     try {
       e.preventDefault()
     const { Name,Email, Password } = data
@@ -38,7 +38,7 @@ function Signup(){
             <button className='w-[20vw] h-10 mt-5 rounded-md bg-slate-900 text-slate-50 hover:bg-slate-800' onClick={handlesubmit}>Sign Up</button>
         </form>
 
-        <h1 className='mt-3 text-lg'>Already have  an  account? <a href="/" className='text-blue-700 text-blue-500'>LogIN</a></h1>
+        <h1 className='mt-3 text-lg'>Already have  an  account? <a href="/login" className='text-blue-700 text-blue-500'>Login</a></h1>
     </div>
       
       

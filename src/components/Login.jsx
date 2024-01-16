@@ -47,7 +47,7 @@ function Login() {
             <button className='w-[20vw] h-10 mt-5 rounded-md bg-slate-900 text-slate-50 hover:bg-slate-800' onClick={handlesubmit}>Login</button>
         </form>
 
-        <h1 className='mt-3 text-lg'>Did'nt have  an  account? <a href="/" className='text-blue-700 text-blue-500'>SignUp</a></h1>
+        <h1 className='mt-3 text-lg'>Did'nt have  an  account? <a href="/signup" className='text-blue-700 text-blue-500'>Signup</a></h1>
     </div>
       
     </>
