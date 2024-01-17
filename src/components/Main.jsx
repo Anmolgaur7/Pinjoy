@@ -2,36 +2,48 @@ import React, { useEffect, useState } from 'react'
 import Photocard from './Photocard'
 
 function Main() {
-  const[user]=useState(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null)
+  const [user] = useState(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null)
   console.log(user);
-  const [visible , setvisible] = useState(true)
+  const [visible, setvisible] = useState(true)
+  const [data, setdata] = useState([])
 
+  const handlephoto = async (e) => {
+    const response = await fetch("http://localhost:8000/api/board", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+    const res = await response.json()
+    setdata(res)
+    console.log(data);
+  }
   useEffect(() => {
+    handlephoto();
     setTimeout(() => {
       setvisible(false)
     }, 5000);
   }, [])
   return (
     <>
-    <div className='bg-[rgb(211,186,241)] mt-5 flex flex-col justify-center items-center'>
-    <div className='flex items-center justify-center'>
-      {
-      visible? <h1 className='text-3xl text-center font-bold
+      <div className='bg-[rgb(211,186,241)] mt-5 flex flex-col justify-center items-center'>
+        <div className='flex items-center justify-center'>
+          {
+            visible ? <h1 className='text-3xl text-center font-bold
       mt-12 text-slate-900 mb-6'>Welcome {user?.name}</h1> : null
-      }
-    </div>
-    <div className='flex justify-center items-center pb-10'>
-    <button className='text-2xl font-medium bg-slate-950 pl-4 pr-4 mt-10 pt-2 pb-2 rounded-md text-white hover:bg-slate-900'> <a href="/board">Add to board</a></button>
-    </div>
-    </div>
-    <div className='flex  justify-evenly items-center mt-3 flex-wrap'>
-    <Photocard />
-    <Photocard />
-    <Photocard />
-    <Photocard />
-    <Photocard />
-    <Photocard />
-    </div>
+          }
+        </div>
+        <div className='flex justify-center items-center pb-10'>
+          <button className='text-2xl font-medium bg-slate-950 pl-4 pr-4 mt-10 pt-2 pb-2 rounded-md text-white hover:bg-slate-900'> <a href="/board">Add to board</a></button>
+        </div>
+      </div>
+      <div className='flex  justify-evenly items-center mt-3 flex-wrap'>
+        {
+          data.map((item, index) => {
+            return <Photocard key={index} pic={item.Imageurl} desc={item.Description} />
+          })
+        }
+      </div>
     </>
   )
 }
