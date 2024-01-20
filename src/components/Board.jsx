@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 
 function Board() {
 
-    const id=JSON.parse(localStorage.getItem('user')).id;
+    const user=JSON.parse(localStorage.getItem('user'))
+    const id=user.id;
     console.log(id);
     const [data, setdata] = useState({ 
         Userid:id,

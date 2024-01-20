@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Boardschema=new mongoose.Schema({
     Userid:{
-        type:Number,
+        type:String,
         required:true
     },
     Description:{
