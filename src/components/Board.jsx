@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react'
-
+import Logo from '../Images/logo.jpg'
+import Ppic from '../Images/profileicon.png'
 function Board() {
+  const [visible, setvisible] = useState(false)
+
+  const logout=()=>{
+    localStorage.clear()
+    window.location.href='/login'
+  }
 
     const user=JSON.parse(localStorage.getItem('user'))
     const id=user.id;
@@ -67,6 +74,22 @@ function Board() {
       }, [])
     return (
         <div>
+          <div className='flex items-center justify-evenly relative' >
+        <a href="/"><img src={Logo} alt="Site logo" className='w-[20vw] rounded-full' /></a>
+        <input type="text" className='bg-slate-200 h-[12vw] rounded-2xl pl-3 ml-3 mr-2' placeholder='Search for ideas...' />
+        <img src={Ppic} alt="profile logo" className='w-[15vw] rounded-full border-black border'onClick={()=>{
+          visible ? setvisible(false) :
+          setvisible(true)}} />
+      </div>
+      <div>
+        {
+          visible ? <ul className='bg-[rgb(211,186,241)] w-[7rem] h-[8rem] flex flex-col justify-center items-center absolute right-10 mt-16 top-1 border border-black'>
+            <li className='text-xl font-semibold hover:text-blue-500  cursor-pointer'>Profile</li>
+            <li className='text-xl font-semibold hover:text-blue-500 cursor-pointer' ><a href="/yourboard">Board</a></li>
+            <li className='text-xl font-semibold hover:text-blue-500 cursor-pointer' onClick={logout}>LogOut</li>
+          </ul> : null
+        }
+      </div>
             <h1 className='text-7xl p-3 font-semibold'>Add to your board!</h1>
             <form className='flex flex-col justify-center bg-orange-200 p-10 items-center'>
             <label className='p-3 text-2xl font-semibold'>Photo</label>

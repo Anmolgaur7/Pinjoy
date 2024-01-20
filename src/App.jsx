@@ -1,5 +1,5 @@
 import './App.css'
-import Navbar from './components/Navbar'
+// import Navbar from './components/Navbar'
 import { BrowserRouter ,Routes,Route} from "react-router-dom";
 import Data from './components/Main'
 import Login from './components/Login'
@@ -10,7 +10,7 @@ import YBoard from './components/Yourboard';
 function App() {
   return (
     <>
-    <Navbar/>
+    {/* <Navbar/>/ */}
     <BrowserRouter>
     <Routes>
       <Route path='/' element={<Data/>}/>

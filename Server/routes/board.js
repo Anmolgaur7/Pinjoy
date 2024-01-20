@@ -11,6 +11,17 @@ router.get('/', async (req, res) => {
         console.error(error)
     }
 })
+router.get('/search', async (req, res) => {
+    try {
+        const boards = await Board.find()
+        const search = req.query.search
+        const filteredBoards = boards.filter(board => board.Description.includes(search))
+        console.log(filteredBoards)
+        res.json(filteredBoards)
+    } catch (error) {
+        console.error(error)
+    }
+})
 
 router.post('/create', async (req, res) => {
     try {
