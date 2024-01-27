@@ -74,10 +74,9 @@ function Board() {
       }, [])
     return (
         <div>
-          <div className='flex items-center justify-evenly relative' >
-        <a href="/"><img src={Logo} alt="Site logo" className='w-[20vw] rounded-full' /></a>
-        <input type="text" className='bg-slate-200 h-[12vw] rounded-2xl pl-3 ml-3 mr-2' placeholder='Search for ideas...' />
-        <img src={Ppic} alt="profile logo" className='w-[15vw] rounded-full border-black border'onClick={()=>{
+        <div className='flex items-center justify-evenly relative' >
+        <a href="/"><img src={Logo} alt="Site logo" className='w-[20vw] rounded-full md:w-[8vw]' /></a>
+        <img src={Ppic} alt="profile logo" className='w-[15vw] rounded-full border-black border md:w-[6vw]'onClick={()=>{
           visible ? setvisible(false) :
           setvisible(true)}} />
       </div>

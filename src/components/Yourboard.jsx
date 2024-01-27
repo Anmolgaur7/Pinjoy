@@ -23,8 +23,7 @@ function Yourboard() {
         "Content-Type": "application/json"
       },
     })
-    const res = await response.json()
-    console.log(res);
+    const res = await response.json();
     setdata(res)
     console.log(data);
   }
@@ -32,11 +31,10 @@ function Yourboard() {
     handlephoto();
   }, [])
   return (
-    <div className='mt-4'>
-      <div className='flex items-center justify-evenly relative' >
-        <a href="/"><img src={Logo} alt="Site logo" className='w-[20vw] rounded-full' /></a>
-        <input type="text" className='bg-slate-200 h-[12vw] rounded-2xl pl-3 ml-3 mr-2' placeholder='Search for ideas...' />
-        <img src={Ppic} alt="profile logo" className='w-[15vw] rounded-full border-black border'onClick={()=>{
+    <div >
+      <div className='flex items-center justify-between relative bg-orange-50 p-2' >
+        <a href="/"><img src={Logo} alt="Site logo" className='w-[20vw] rounded-full ml-10 md:w-[8vw]' /></a>
+        <img src={Ppic} alt="profile logo" className='w-[15vw] rounded-full border-black border mr-10 md:w-[6vw]'onClick={()=>{
           visible ? setvisible(false) :
           setvisible(true)}} />
       </div>
@@ -49,12 +47,12 @@ function Yourboard() {
           </ul> : null
         }
       </div>
-      <h1 className='text-4xl font-semibold ml-2 font-mono'>Your Board</h1>
+      <h1 className='text-3xl font-semibold mt-6 font-mono text-center'>Your Board</h1>
       <div className='flex justify-evenly items-center mt-3 flex-wrap'>
         {
-          data.map((item, index) => {
+          data.map((item) => {
             if(item.Userid==id){
-              return <Photocard key={index} pic={item.Imageurl} desc={item.Description} />
+              return <Photocard  pic={item.Imageurl} desc={item.Description} />
             }
           })
         }

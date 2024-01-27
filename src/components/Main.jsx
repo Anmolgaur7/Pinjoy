@@ -51,19 +51,18 @@ function Main() {
   return (
     <>
      <div className='flex items-center justify-evenly relative' >
-        <a href="/"><img src={Logo} alt="Site logo" className='w-[20vw] rounded-full' /></a>
-        <form >
-          <input type="text" className='bg-slate-200 h-[12vw] rounded-2xl pl-3 ml-3 mr-2' placeholder='Search for ideas...' onChange={(e) => setsearch(e.target.value)} />
-          <button className='bg-slate-200 h-[12vw] rounded-2xl pl-3 ml-3 mr-2' onClick={handlesearch}>Search</button>
+        <a href="/"><img src={Logo} alt="Site logo" className='w-[20vw] rounded-full md:w-[8vw]' /></a>
+        <form className='flex justify-center items-center flex-row' >
+          <input type="text" className='bg-slate-200 h-[12vw] rounded-2xl pl-3 ml-3 mr-2 md:h-[4vw]' placeholder='Search for ideas...' onChange={(e) => setsearch(e.target.value)} />
+          <button className='bg-slate-200 h-[12vw] rounded-2xl pl-4 pr-4 ml-3 hover:bg-[rgb(211,186,241)]  md:h-[3vw] font-bold' onClick={handlesearch}>Search</button>
         </form>
-        <img src={Ppic} alt="profile logo" className='w-[15vw] rounded-full border-black border'onClick={()=>{
+        <img src={Ppic} alt="profile logo" className='w-[15vw] rounded-full border-black border md:w-[6vw]'onClick={()=>{
           visible ? setvisible(false) :
           setvisible(true)}} />
       </div>
       <div>
         {
-          visible ? <ul className='bg-[rgb(211,186,241)] w-[7rem] h-[8rem] flex flex-col justify-center items-center absolute right-10 mt-16 top-1 border border-black'>
-            <li className='text-xl font-semibold hover:text-blue-500  cursor-pointer'>Profile</li>
+          visible ? <ul className='bg-[rgb(211,186,241)] w-[7rem] h-[8rem] flex flex-col justify-center items-center absolute right-10 mt-16 top-1 border border-black md:mr-32'>
             <li className='text-xl font-semibold hover:text-blue-500 cursor-pointer' ><a href="/yourboard">Board</a></li>
             <li className='text-xl font-semibold hover:text-blue-500 cursor-pointer' onClick={logout}>LogOut</li>
           </ul> : null
