@@ -6,6 +6,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+
+  "builds": [
+    {
+      "src": "app.js", 
+      "use": "@vercel/node" 
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/app.js" 
+    }
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -15,6 +28,6 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.4",
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.1.0"
   }
 }
