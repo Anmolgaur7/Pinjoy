@@ -17,7 +17,7 @@ function Yourboard() {
   console.log(user);
   const [data, setdata] = useState([])
   const handlephoto = async (e) => {
-    const response = await fetch("http://localhost:8000/api/board", {
+    const response = await fetch("https:/pinjoybackend.vercel.app/api/board", {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
