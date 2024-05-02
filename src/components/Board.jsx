@@ -1,104 +1,135 @@
-import React, { useEffect, useState } from 'react'
-import Logo from '../Images/logo.jpg'
-import Ppic from '../Images/profileicon.png'
+import React, { useEffect, useState } from 'react';
+import Logo from '../Images/logo.jpg';
+import Ppic from '../Images/profileicon.png';
+
 function Board() {
-  const [visible, setvisible] = useState(false)
+  const [visible, setVisible] = useState(false);
+  const [dragging, setDragging] = useState(false);
+  const [data, setData] = useState({
+    Userid: '',
+    Description: '',
+    Imageurl: '',
+  });
 
-  const logout=()=>{
-    localStorage.clear()
-    window.location.href='/login'
-  }
+  const logout = () => {
+    localStorage.clear();
+    window.location.href = '/login';
+  };
 
-    const user=JSON.parse(localStorage.getItem('user'))
-    const id=user.id;
-    console.log(id);
-    const [data, setdata] = useState({ 
-        Userid:id,
-        Description: '',
-        Imageurl: '', 
-    })
+  const user = JSON.parse(localStorage.getItem('user'));
+  const id = user.id;
 
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'Pinjoy');
+    formData.append('cloud_name', 'dvmsnhndm');
+    const response = await fetch('https://api.cloudinary.com/v1_1/dvmsnhndm/image/upload', {
+      method: 'POST',
+      body: formData
+    });
+    const responseData = await response.json();
+    return { url: responseData.secure_url };
+  };
 
-    const uploadimage=async(file)=>{
-        const formdata=new FormData();
-        formdata.append('file',file);
-        formdata.append('upload_preset','Pinjoy');
-        formdata.append('cloud_name','dvmsnhndm');
-        const res=await fetch('https://api.cloudinary.com/v1_1/dvmsnhndm/image/upload',{
-          method:'POST',
-          body:formdata
-        })
-        const resdata=await res.json();
-        console.log(resdata);
-        return {url:resdata.secure_url}
-      }
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    const { url } = await uploadImage(file);
+    setData({ ...data, Imageurl: url });
+  };
 
-      const handlesubmit = async (e) => {
-        e.preventDefault();
-        console.log(data);
-        const {url}=await uploadimage(data.Imageurl)
-        console.log(url);
-        if (!url) {
-          alert('Please Upload Image')
-          return
-        }
-        const res = await fetch('http://localhost:8000/api/board/create', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ ...data, Imageurl: url })
-        })
-        if (res.status === 200) {
-          alert('Photo Added')
-          setdata({
-            Description: '',
-            Imageurl: '',
-          }) 
-        }
-        console.log(data);
-        const resdata = await res.json()
-        console.log(resdata);
-        if (resdata.error) {
-          alert(resdata.error)
-        }
-        else {
-          alert('Image Uploaded')
-        } 
-      }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { url } = await uploadImage(data.Imageurl);
+    if (!url) {
+      alert('Please upload an image');
+      return;
+    }
+    const response = await fetch('http://localhost:8000/api/board/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ ...data, Imageurl: url })
+    });
+    if (response.status === 200) {
+      alert('Photo added');
+      setData({ ...data, Description: '', Imageurl: '' });
+    }
+    const responseData = await response.json();
+    if (responseData.error) {
+      alert(responseData.error);
+    } else {
+      alert('Image uploaded');
+    }
+  };
 
-      useEffect(() => {
-        if (!localStorage.getItem('user')) {
-          window.location.href = '/login'
-        }
-      }, [])
-    return (
-        <div>
-        <div className='flex items-center justify-evenly relative' >
-        <a href="/"><img src={Logo} alt="Site logo" className='w-[20vw] rounded-full md:w-[8vw]' /></a>
-        <img src={Ppic} alt="profile logo" className='w-[15vw] rounded-full border-black border md:w-[6vw]'onClick={()=>{
-          visible ? setvisible(false) :
-          setvisible(true)}} />
-      </div>
-      <div>
-        {
-          visible ? <ul className='bg-[rgb(211,186,241)] w-[7rem] h-[8rem] flex flex-col justify-center items-center absolute right-10 mt-16 top-1 border border-black'>
-            <li className='text-xl font-semibold hover:text-blue-500  cursor-pointer'>Profile</li>
-            <li className='text-xl font-semibold hover:text-blue-500 cursor-pointer' ><a href="/yourboard">Board</a></li>
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragging(false);
+  };
+
+  const handleDrop = async (e) => {
+    e.preventDefault();
+    setDragging(false);
+    const file = e.dataTransfer.files[0];
+    const { url } = await uploadImage(file);
+    setData({ ...data, Imageurl: url });
+  };
+
+  useEffect(() => {
+    if (!localStorage.getItem('user')) {
+      window.location.href = '/login';
+    }
+    setData({ ...data, Userid: id });
+  }, [id]);
+
+  return (
+    <div>
+      <div className='flex items-center justify-between relative'>
+        <a href="/">
+          <img src={Logo} alt="Site logo" className='w-[20vw] rounded-full md:w-[8vw]' />
+        </a>
+        <img src={Ppic} alt="profile logo" className='w-[15vw] rounded-full border-black border md:w-[6vw]' onClick={() => setVisible(!visible)} />
+        {visible &&
+          <ul className='bg-[rgb(211,186,241)] w-[7rem] h-[8rem] flex flex-col justify-center items-center absolute right-10 mt-16 top-1 border border-black'>
+            <li className='text-xl font-semibold hover:text-blue-500 cursor-pointer'>Profile</li>
+            <li className='text-xl font-semibold hover:text-blue-500 cursor-pointer'><a href="/yourboard">Board</a></li>
             <li className='text-xl font-semibold hover:text-blue-500 cursor-pointer' onClick={logout}>LogOut</li>
-          </ul> : null
+          </ul>
         }
       </div>
-            <h1 className='text-7xl p-3 font-semibold'>Add to your board!</h1>
-            <form className='flex flex-col justify-center bg-orange-200 p-10 items-center'>
-            <label className='p-3 text-2xl font-semibold'>Photo</label>
-            <input type="file" name='photo' onChange={(e)=>setdata({...data,Imageurl:e.target.files[0]})} className='p-3 text-2xl m-1 w-[90vw] '/>
-            <label className='p-3 text-2xl font-semibold'>Description</label>
-            <input type="text" placeholder='Write an effective description' className='p-3 text-2xl w-[90vw] border border-black' onChange={(e)=>setdata({...data,Description:e.target.value})}/>
-            <button className='bg-slate-950 rounded-lg mt-4 text-white p-3 text-2xl' onClick={handlesubmit}>Add</button>
-            </form>
-        </div>
-    )
+      <div className='flex flex-col items-center justify-center'>
+        <h1 className='text-4xl p-3 font-semibold'>Add to your board!</h1>
+        <form className='flex flex-col justify-center bg-orange-200 p-10 items-center'>
+          <label className='p-3 text-2xl font-semibold'>Drag & Drop or Click to Upload</label>
+          <input
+            type="file"
+            name='photo'
+            onChange={handleFileChange}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            className={`p-3 text-2xl m-1 w-[90vw] border border-black ${dragging ? 'border-blue-500' : ''}`}
+          />
+          {data.Imageurl &&
+            <img src={data.Imageurl} alt="Uploaded" className="max-w-[90vw] my-4" />
+          }
+          <label className='p-3 text-2xl font-semibold'>Description</label>
+          <textarea
+            placeholder='Write an effective description'
+            className='p-3 text-2xl w-[90vw] border border-black resize-none'
+            onChange={(e) => setData({ ...data, Description: e.target.value })}
+          />
+          <button className='bg-slate-950 rounded-lg mt-4 text-white p-3 text-2xl' onClick={handleSubmit}>Add</button>
+        </form>
+      </div>
+    </div>
+  );
 }
 
-export default Board
+export default Board;

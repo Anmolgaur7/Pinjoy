@@ -6,6 +6,7 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import Board from './components/Board'; 
 import YBoard from './components/Yourboard'; 
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path='/board' element={<Board/>}/>
       <Route path='/yourboard' element={<YBoard/>}/>
     </Routes>
+    <Footer />
     </BrowserRouter>
     </>
   )

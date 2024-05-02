@@ -12,5 +12,9 @@ const Boardschema=new mongoose.Schema({
         type:String,
         required:true
     },
+    Comments:{
+        type:Array,
+        default:[]
+    }
 })
 module.exports=mongoose.model('board',Boardschema)
