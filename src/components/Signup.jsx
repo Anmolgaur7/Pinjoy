@@ -30,7 +30,7 @@ function Signup(){
     })
     const res = await response.json()
     console.log(res);
-    navigate('/')
+    navigate('/login')
     } catch (error) {
       console.log(error);
     }

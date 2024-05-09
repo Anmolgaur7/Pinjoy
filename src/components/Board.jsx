@@ -17,6 +17,7 @@ function Board() {
   };
 
   const user = JSON.parse(localStorage.getItem('user'));
+  console.log(user);
   const id = user.id;
 
   const uploadImage = async (file) => {

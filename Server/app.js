@@ -16,6 +16,7 @@ connect();
 //routes
 app.use('/api/user',require('./routes/user'));
 app.use('/api/board',require('./routes/board'));
+app.use('/api/conversation',require('./routes/conversation'));
 
 app.listen(PORT,()=>{
     console.log(`server started on port ${PORT}`);

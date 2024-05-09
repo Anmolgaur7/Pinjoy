@@ -15,6 +15,10 @@ const Boardschema=new mongoose.Schema({
     Comments:{
         type:Array,
         default:[]
+    },
+    likes:{
+        type:Number,
+        default:0
     }
 })
 module.exports=mongoose.model('board',Boardschema)

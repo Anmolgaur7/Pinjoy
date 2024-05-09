@@ -13,6 +13,17 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.post('/one', async (req, res) => {
+    try {
+        const { id } = req.body
+        const users = await User.findOne({_id:id})
+        res.json(users)
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+
 router.post('/register', async(req, res) => {
     try {
         console.log(req.body)

@@ -17,6 +17,16 @@ router.get('/', async (req, res) => {
         res.status(500).json({ error: 'Server Error' });
     }
 });
+router.post('/inboard', async (req, res) => {
+    try {
+        const { id } = req.body;
+        const boards = await Board.findOne({ _id: id });
+        res.json(boards);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server Error' });
+    }
+});
 
 router.get('/search', async (req, res) => {
     try {
@@ -56,16 +66,40 @@ router.post('/create', async (req, res) => {
     }
 });
 
-router.post('/update', async (req, res) => {
+router.post('/updatecomment', async (req, res) => {
     try {
-        const { id, Comments } = req.body;
+        const { id, comment } = req.body;
+
+        // Find the board by its ID
+        const board = await Board.findById(id);
+        if (!board) {
+            return res.status(404).json({ msg: 'Board not found' });
+        }
+
+        // Push the new comment to the existing Comments array
+        board.Comments.push(comment);
+
+        // Save the updated board
+        const updatedBoard = await board.save();
+
+        res.json(updatedBoard);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server Error' });
+    }
+});
+
+
+router.post('/updatelike', async (req, res) => {
+    try {
+        const { id } = req.body;
         // Find the board by its ID
         const board = await Board.findOne({ _id: id });
         if (!board) {
             return res.status(404).json({ msg: 'Board not found' });
         }
         // Update the comments of the board
-        board.Comments = Comments;
+        board.likes = board.likes + 1;
         // Save the updated board
         const updatedBoard = await board.save();
 

@@ -13,8 +13,6 @@ function Yourboard() {
   const [user] = useState(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null)
   const id=user.id;
   
-  console.log(id);
-  console.log(user);
   const [data, setdata] = useState([])
   const handlephoto = async (e) => {
     const response = await fetch("http://localhost:8000/api/board", {
@@ -51,9 +49,8 @@ function Yourboard() {
       <div className='flex justify-evenly items-center mt-3 flex-wrap'>
         {
           data.map((item) => {
-            if(item.Userid==id){
-              return <Photocard  pic={item.Imageurl} desc={item.Description} />
-              askjndkjasnkdjnaskjdaskjd
+            if(item.Userid===id){
+              return <Photocard id={item._id} uploaderId={item.Userid}  pic={item.Imageurl} desc={item.Description} />
             }
           })
         }
