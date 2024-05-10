@@ -6,6 +6,7 @@ export default {
     extend: {
       backgroundImage: theme => ({
         'background': "url('/src/images/background.jpeg')",
+        'log': "url('/src/Images/bg2.gif')",
       }),
     },
   },

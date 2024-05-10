@@ -91,18 +91,23 @@ function Board() {
 
   return (
     <div>
-      <div className='flex items-center justify-between relative'>
-        <a href="/">
-          <img src={Logo} alt="Site logo" className='w-[20vw] rounded-full md:w-[8vw]' />
-        </a>
-        <img src={Ppic} alt="profile logo" className='w-[15vw] rounded-full border-black border md:w-[6vw]' onClick={() => setVisible(!visible)} />
-        {visible &&
-          <ul className='bg-[rgb(211,186,241)] w-[7rem] h-[8rem] flex flex-col justify-center items-center absolute right-10 mt-16 top-1 border border-black'>
-            <li className='text-xl font-semibold hover:text-blue-500 cursor-pointer'>Profile</li>
-            <li className='text-xl font-semibold hover:text-blue-500 cursor-pointer'><a href="/yourboard">Board</a></li>
-            <li className='text-xl font-semibold hover:text-blue-500 cursor-pointer' onClick={logout}>LogOut</li>
-          </ul>
-        }
+      <div>
+        <div className='flex justify-between items-center bg-red-300 p-[0.85rem]'>
+          <a href="/"><img src={Logo} alt="Site logo" className='w-[15vw] rounded-full md:w-[5vw]' /></a>
+          <div>
+            <a href="/board" className='font-bold text-xl m-5  hover:text-blue-800'>Board</a>
+            <a href="/yourboard" className='font-bold text-xl m-5  hover:text-blue-800'>YourBoard</a>
+            <a href="/chat" className='font-bold text-xl m-5  hover:text-blue-800'>Chat</a>
+          </div>
+          <div className='relative'>
+            <img src={Ppic} alt="profile logo" className='w-[15vw] rounded-full border-black border md:w-[5vw]' onClick={() => setvisible(!visible)} />
+            {visible && (
+              <ul className='absolute right-0 mt-8 p-2 bg-white border border-gray-300 rounded shadow'>
+                <li className='text-xl font-semibold hover:text-blue-500 cursor-pointer' onClick={logout}>LogOut</li>
+              </ul>
+            )}
+          </div>
+        </div>
       </div>
       <div className='flex flex-col items-center justify-center'>
         <h1 className='text-4xl p-3 font-semibold'>Add to your board!</h1>

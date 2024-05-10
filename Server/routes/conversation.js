@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Conversation = require('../models/Conversation');
+// const FriendRequest = require('../models/Friendrequest');
+
 const User = require('../models/User');
 
-// Route to create a new conversation
 router.post('/', async (req, res) => {
     try {
         const { participants } = req.body;
@@ -26,6 +27,17 @@ router.post('/', async (req, res) => {
         await conversation.save();
 
         res.status(201).json(conversation);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Route to get all conversations 
+router.get('/', async (req, res) => {
+    try {
+        const conversations = await Conversation.find();
+        res.json(conversations);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
