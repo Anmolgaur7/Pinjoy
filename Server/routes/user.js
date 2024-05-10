@@ -12,6 +12,40 @@ router.get('/', async (req, res) => {
         console.error(error)
     }
 })
+// Fetching all the friends and their names
+router.post('/friends', async (req, res) => {
+    try {
+        // Extract the user's ID from the request body
+        const { userId } = req.body;
+
+        if (!userId) {
+            return res.status(400).json({ msg: 'User ID is required' });
+        }
+
+        // Find the user by ID
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Get the list of friends (assuming user has a `friends` field in their document)
+        const friendIds = user.friends;
+
+        if (!friendIds || friendIds.length === 0) {
+            return res.status(200).json({ friends: [], msg: 'No friends found' });
+        }
+
+        // Find the friends by their IDs and retrieve only their names
+        const friends = await User.find({ _id: { $in: friendIds } }, 'Name');
+
+        // Send the list of friends' names in the response
+        res.status(200).json({ friends });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: 'Server error' });
+    }
+});
 
 router.post('/one', async (req, res) => {
     try {

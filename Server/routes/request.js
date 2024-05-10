@@ -8,10 +8,12 @@ const FriendRequest = require('../models/Friendrequest');
 router.post('/send-request', async (req, res) => {
     try {
         const { senderId, receiverId } = req.body;
+        console.log(senderId, receiverId);
         // Create a new friend request
         const friendRequest = new FriendRequest({
             sender: senderId,
             receiver: receiverId,
+            action: 'pending'
         });
 
         await friendRequest.save();
@@ -23,10 +25,26 @@ router.post('/send-request', async (req, res) => {
     }
 });
 
+// Route to get all friend requests for a user
+
+router.post('/get-requests', async (req, res) => {
+
+    try {
+        const { userId } = req.body;
+
+        // Find all friend requests where the user is the receiver
+        const requests = await FriendRequest.find({ receiver: userId });
+
+        res.status(200).json({ requests });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 // Route to respond to a friend request
 router.post('/respond-request', async (req, res) => {
     try {
-        const { requestId, userId, action } = req.body; // `action` should be either 'accept' or 'decline'
+        const { requestId, action } = req.body; // `action` should be either 'accept' or 'decline'
 
         // Find the friend request by ID
         const friendRequest = await FriendRequest.findById(requestId);
