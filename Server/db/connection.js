@@ -13,5 +13,3 @@ const connectdb=async ()=>{
 
 module.exports=connectdb
 
-
-// Gzb6M44rzFlWIC2N

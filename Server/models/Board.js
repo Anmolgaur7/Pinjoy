@@ -4,6 +4,11 @@ const Boardschema=new mongoose.Schema({
         type:String,
         required:true
     },
+    Title:{
+        type:String,
+        required:true,
+        default:'Untitled'
+    },
     Description:{
         type:String,
         required:true

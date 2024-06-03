@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Logo from '../Images/logo.jpg';
 import Ppic from '../Images/profileicon.png';
+import { toast,ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+import { FaSearch } from 'react-icons/fa';
+import { FaBars } from 'react-icons/fa';
+import { FaTimes } from 'react-icons/fa';
 
 
 const UsersList = ({ currentUserId }) => {
@@ -10,7 +15,13 @@ const UsersList = ({ currentUserId }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [visible, setvisible] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
 
+    const logout = () => {
+        localStorage.clear();
+        window.location.href = '/login';
+
+    };
     // Fetch users from the server
     useEffect(() => {
         const fetchUsers = async () => {
@@ -25,7 +36,7 @@ const UsersList = ({ currentUserId }) => {
               setUsers(res);
             }
             catch (error) {
-                console.error(error);
+                toast.error('Error fetching users');
                 setError(error.message);
             } finally {
                 setLoading(false);
@@ -53,13 +64,15 @@ const UsersList = ({ currentUserId }) => {
             console.log(data);
 
             if (response.ok) {
-                console.log(data.message); // Log the success message
+                console.log(data.message);
+                // Log the success message
+                toast.success('Friend request sent')
             } else {
                 console.error(data.message); // Log the error message
             }
         } catch (error) {
             console.error(error);
-            // Handle error appropriately
+            toast.error('Error sending friend request');
         }
     };
 
@@ -74,22 +87,46 @@ const UsersList = ({ currentUserId }) => {
 
     return (
         <>
-         <div className='flex justify-between items-center bg-red-300 p-[0.85rem]'>
-          <a href="/"><img src={Logo} alt="Site logo" className='w-[15vw] rounded-full md:w-[5vw]' /></a>
-          <div>
-            <a href="/board" className='font-bold text-xl m-5  hover:text-blue-800'>Board</a>
-            <a href="/yourboard" className='font-bold text-xl m-5  hover:text-blue-800'>YourBoard</a>
-            <a href="/userslist" className='font-bold text-xl m-5  hover:text-blue-800'>Peaple</a>
+          <div className="bg-red-400 p-[0.85rem]">
+          <div className="flex justify-between items-center">
+            <a href="/main">
+              <img src={Logo} alt="Site logo" className="w-[15vw] rounded-full md:w-[3vw]" />
+            </a>
+            <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+              {menuOpen ? <FaTimes className="text-white text-2xl" /> : <FaBars className="text-white text-2xl" />}
+            </button>
+            <div className="hidden md:flex flex-grow justify-between items-center">
+              <div className="flex items-center">
+                <a href="/yourboard" className="font-bold text-xl m-2 md:m-5 hover:text-blue-800">YourBoard</a>
+                <a href="/userslist" className="font-bold text-xl m-2 md:m-5 hover:text-blue-800">People</a>
+                <a href="/requests" className="font-bold text-xl m-2 md:m-5 hover:text-blue-800">Requests</a>
+              </div>
+            </div>
+            <div className="relative mt-2 md:mt-0">
+              <img
+                src={Ppic}
+                alt="profile logo"
+                className="w-[15vw] rounded-full border-black border md:w-[3vw]"
+                onClick={() => setvisible(!visible)}
+              />
+              {visible && (
+                <ul className="absolute right-0 mt-8 p-2 bg-white border border-gray-300 rounded shadow">
+                  <li className="text-xl font-semibold hover:text-blue-500 cursor-pointer" onClick={logout}>LogOut</li>
+                </ul>
+              )}
+            </div>
           </div>
-          <div className='relative'>
-            <img src={Ppic} alt="profile logo" className='w-[15vw] rounded-full border-black border md:w-[5vw]' onClick={() => setvisible(!visible)} />
-            {visible && (
-              <ul className='absolute right-0 mt-8 p-2 bg-white border border-gray-300 rounded shadow'>
-                <li className='text-xl font-semibold hover:text-blue-500 cursor-pointer' onClick={logout}>LogOut</li>
-              </ul>
-            )}
-          </div>
+          {menuOpen && (
+            <div className="fixed inset-0 bg-red-400 flex flex-col items-center justify-center z-50 md:hidden">
+              <a href="/yourboard" className="font-bold text-2xl m-5 hover:text-blue-800" onClick={() => setMenuOpen(false)}>YourBoard</a>
+              <a href="/userslist" className="font-bold text-2xl m-5 hover:text-blue-800" onClick={() => setMenuOpen(false)}>People</a>
+              <a href="/requests" className="font-bold text-2xl m-5 hover:text-blue-800" onClick={() => setMenuOpen(false)}>Requests</a>
+              <a href="/freinds" className="font-bold text-2xl m-5 hover:text-blue-800" onClick={() => setMenuOpen(false)}
+              >freinds</a>
+            </div>
+          )}
         </div>
+        <ToastContainer />
         <div className="container mx-auto p-4">
             <h2 className="text-2xl font-bold mb-4">All Users on Pinjoy</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

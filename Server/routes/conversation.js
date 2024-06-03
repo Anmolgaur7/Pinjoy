@@ -5,10 +5,11 @@ const Conversation = require('../models/Conversation');
 
 const User = require('../models/User');
 
+
+
 router.post('/', async (req, res) => {
     try {
         const { participants } = req.body;
-
         // Check if participants are provided
         if (!participants || participants.length < 2) {
             return res.status(400).json({ message: 'At least two participants are required' });
@@ -22,10 +23,16 @@ router.post('/', async (req, res) => {
             }
         }
 
+        // Check if conversation already exists with the same participants
+        const existingConversation = await Conversation.findOne({ participants: { $all: participants } });
+        if (existingConversation) {
+            return res.status(400).json({ message: 'Conversation already exists with these participants',id:existingConversation._id  }
+            );
+        }
+
         // Create a new conversation
         const conversation = new Conversation({ participants });
         await conversation.save();
-
         res.status(201).json(conversation);
     } catch (error) {
         console.error(error);
@@ -33,8 +40,34 @@ router.post('/', async (req, res) => {
     }
 });
 
+// Assuming you already have the required imports and setup for your router
+
+// Route to fetch a conversation by participant IDs
+router.post('/one', async (req, res) => {
+    try {
+        const { participantIds } = req.body;
+
+        // Check if participantIds are provided
+        if (!participantIds || participantIds.length < 2) {
+            return res.status(400).json({ message: 'At least two participant IDs are required' });
+        }
+
+        const conversation = await Conversation.findOne({ participants: { $all: participantIds } });
+
+        if (!conversation) {
+            return res.status(404).json({ message: 'Conversation not found with these participants' });
+        }
+
+        res.json(conversation);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+
 // Route to get all conversations 
-router.get('/', async (req, res) => {
+router.get('/fetch', async (req, res) => {
     try {
         const conversations = await Conversation.find();
         res.json(conversations);

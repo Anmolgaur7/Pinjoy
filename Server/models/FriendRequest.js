@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const FriendRequestSchema = new mongoose.Schema({
+    Name: {
+        type: String,
+        required: true
+    },
     sender: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

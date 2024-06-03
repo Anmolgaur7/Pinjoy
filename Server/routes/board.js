@@ -32,7 +32,7 @@ router.get('/search', async (req, res) => {
     try {
         const boards = await Board.find();
         const search = req.query.search;
-        const filteredBoards = boards.filter(board => board.Description.includes(search));
+        const filteredBoards = boards.filter(board => board.Description.includes(search)||board.Title.includes(search));
         console.log(filteredBoards);
         res.json(filteredBoards);
     } catch (error) {
@@ -44,12 +44,13 @@ router.get('/search', async (req, res) => {
 router.post('/create', async (req, res) => {
     try {
         console.log(req.body);
-        const { Userid, Description, Imageurl } = req.body;
-        if (!Userid || !Description || !Imageurl) {
+        const { Userid,Title ,Description, Imageurl } = req.body;
+        if (!Userid || !Description || !Title || !Imageurl) {
             return res.status(400).json({ msg: 'Please enter all fields' });
         }
         const newboard = new Board({
             Userid,
+            Title,
             Description,
             Imageurl
         });
@@ -57,6 +58,7 @@ router.post('/create', async (req, res) => {
         res.json({
             id: savedboard.id,
             Userid: savedboard.Userid,
+            Title: savedboard.Title,
             Description: savedboard.Description,
             Imageurl: savedboard.Imageurl
         });
