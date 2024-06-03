@@ -95,7 +95,7 @@ function Board() {
     }
     setData({ ...data, Userid: id });
   }, [id]);
-
+ 
   return (
     <div>
       
@@ -110,7 +110,7 @@ function Board() {
             </button>
             <div className="hidden md:flex flex-grow justify-between items-center">
               <div className="flex items-center">
-                <a href="/yourboard" className="font-bold text-xl m-2 md:m-5 hover:text-blue-800">YourBoard</a>
+                <a href="/yourboard" className="font-bold text-xl  m-2 md:m-5 hover:text-blue-800">YourBoard</a>
                 <a href="/userslist" className="font-bold text-xl m-2 md:m-5 hover:text-blue-800">People</a>
                 <a href="/requests" className="font-bold text-xl m-2 md:m-5 hover:text-blue-800">Requests</a>
               </div>
