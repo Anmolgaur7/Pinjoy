@@ -4,11 +4,12 @@ import Ppic from '../Images/profileicon.png';
 import { toast,ToastContainer } from 'react-toastify';
 import { FaBars } from 'react-icons/fa';
 import { FaTimes } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Board() {
   const [visible, setvisible] = useState(false);
-  
+  const nav=useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [data, setData] = useState({
@@ -69,6 +70,7 @@ function Board() {
       toast.error(responseData.error);
     } else {
       toast.success('Pin added successfully');
+      nav('/main');
     }
   };
 

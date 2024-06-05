@@ -69,8 +69,8 @@ function Main() {
 
 
 
-  const handlesearch = async () => {
-    // e.preventDefault();
+  const handlesearch = async (e) => {
+    e.preventDefault();
     const response = await fetch(`http://localhost:8000/api/board/search?search=${search}`, {
       method: "GET",
       headers: {
